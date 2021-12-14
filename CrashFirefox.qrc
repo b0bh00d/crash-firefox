@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/CrashFirefox.png</file>
+    </qresource>
+</RCC>
