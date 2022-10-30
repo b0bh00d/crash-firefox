@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Qt local files
+*.pro.user
+
+# Misc
+*.log

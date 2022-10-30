@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>604</width>
-    <height>152</height>
+    <height>248</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,7 +59,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Hurl the thunderbolt at  this process:</string>
+              <string>Hurl the thunderbolt at this process:</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -107,6 +107,20 @@
             </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>Command Line</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="edit_CLI">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

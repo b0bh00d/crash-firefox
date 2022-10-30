@@ -5,6 +5,7 @@
 
 #include <Windows.h>
 #include <TlHelp32.h>
+#include <WbemIdl.h>
 
 #include <QMainWindow>
 #include <QThread>
@@ -29,6 +30,11 @@ private slots:
     void slot_enumerate_processes();
 
     void slot_thunderbolt_finished();
+    void slot_process_changed(int index);
+
+private: // methods
+    BSTR qt_to_BSTR(const QString &str);
+    int get_process_info(DWORD pid, QString& commandLine, QString& executable);
 
 private: // data members
     Ui::MainWindow *m_ui;
@@ -45,3 +51,6 @@ private: // data members
      */
     int m_thunderbolt_thread_count{0};
 };
+
+using process_data_t = QPair<DWORD, QString>;
+Q_DECLARE_METATYPE(process_data_t);
