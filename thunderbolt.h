@@ -22,7 +22,7 @@ public: // aliases and enums
     };
 
 public: // methods
-    explicit Thunderbolt(DWORD pid, QObject *parent = nullptr);
+    explicit Thunderbolt(DWORD pid, QObject *parent = nullptr) : QThread(parent), m_pid(pid) {}
     ~Thunderbolt() override = default;
 
     /*!

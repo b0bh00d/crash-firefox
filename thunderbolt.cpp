@@ -2,15 +2,6 @@
 
 #include "thunderbolt.h"
 
-Thunderbolt::Thunderbolt(DWORD pid, QObject *parent)
-    : QThread(parent), m_pid(pid)
-{
-}
-
-//Thunderbolt::~Thunderbolt()
-//{
-//}
-
 void Thunderbolt::run()
 {
     m_result = Result::Success;
@@ -21,7 +12,16 @@ void Thunderbolt::run()
     else
     {
         // Create a thread that starts at 0x0 and should immediately crash
-        auto hThread(CreateRemoteThread(targetProc, nullptr, 0, nullptr, nullptr, 0, nullptr));
+#if defined(CRASH_WITH_0x0)
+        auto hThread = CreateRemoteThread(targetProc, nullptr, 0, nullptr, nullptr, 0, nullptr);
+#else
+        auto rHandle = reinterpret_cast<LPTHREAD_START_ROUTINE>(GetProcAddress(GetModuleHandleA("NtDll.dll"), "DbgBreakPoint"));
+        assert(rHandle);
+        auto hThread = CreateRemoteThread(targetProc, nullptr, 0,
+            rHandle,
+            nullptr, 0, nullptr);
+#endif
+
         if (!hThread)
         {
             m_result = Result::CouldNotCreate;
