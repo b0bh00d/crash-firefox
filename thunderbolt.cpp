@@ -15,6 +15,7 @@ void Thunderbolt::run()
 #if defined(CRASH_WITH_0x0)
         auto hThread = CreateRemoteThread(targetProc, nullptr, 0, nullptr, nullptr, 0, nullptr);
 #else
+        // This works because ntdll.dll should be loaded at the same address in all processess
         auto rHandle = reinterpret_cast<LPTHREAD_START_ROUTINE>(GetProcAddress(GetModuleHandleA("NtDll.dll"), "DbgBreakPoint"));
         assert(rHandle);
         auto hThread = CreateRemoteThread(targetProc, nullptr, 0,
