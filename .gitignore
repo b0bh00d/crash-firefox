@@ -1,6 +1,11 @@
 # Prerequisites
 *.d
 
+# Build files
+Makefile*
+debug/
+release/
+
 # Compiled Object files
 *.slo
 *.lo
@@ -33,6 +38,10 @@
 
 # Qt local files
 *.pro.user
+.qmake.stash
+.qtc_clangd
+ui_mainwindow.h
+crashfirefox_plugin_import.cpp
 
 # Misc
 *.log

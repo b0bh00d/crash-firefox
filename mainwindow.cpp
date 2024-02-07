@@ -98,7 +98,7 @@ void MainWindow::slot_crash_it()
 
         auto str{m_ui->combo_Processes->currentText()};
 
-        QRegularExpression re("(.+)\\s+\\(\\d+\\)$");
+        static QRegularExpression re("(.+)\\s+\\(\\d+\\)$");
         QRegularExpressionMatch match{re.match(str)};
         assert(match.hasMatch());
 
@@ -301,7 +301,7 @@ void MainWindow::slot_enumerate_processes()
 
         m_ui->combo_Processes->model()->sort(0, Qt::AscendingOrder);
 
-        int parent_index{0};
+        int parent_index{-1};
         for(auto i = 0;i < m_ui->combo_Processes->count();++i)
         {
             auto str{m_ui->combo_Processes->itemText(i)};
@@ -316,7 +316,7 @@ void MainWindow::slot_enumerate_processes()
             }
         }
 
-        if(parent_index == 0)
+        if(parent_index == -1)
         {
             QMessageBox::critical(this, m_title, tr("Could not identify the Firefox process!"));
             QTimer::singleShot(0, qApp, &QApplication::quit);
