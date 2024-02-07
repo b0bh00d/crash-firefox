@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
         this, &MainWindow::slot_set_control_states);
     connect(m_ui->button_CrashIt, &QPushButton::clicked, this, &MainWindow::slot_crash_it);
     connect(m_ui->button_Cancel, &QPushButton::clicked, qApp, &QApplication::quit);
+    connect(m_ui->button_Refresh, &QPushButton::clicked, this, &MainWindow::slot_manual_refresh);
 
     connect(m_ui->combo_Processes, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MainWindow::slot_process_changed);
 
@@ -34,6 +35,12 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete m_ui;
+}
+
+void MainWindow::slot_manual_refresh()
+{
+    m_refresh_button = true;
+    QTimer::singleShot(0, this, &MainWindow::slot_enumerate_processes);
 }
 
 void MainWindow::slot_process_changed(int index)
@@ -138,6 +145,8 @@ void MainWindow::slot_crash_it()
             tb->start();
         }
     }
+
+    m_thunderbold_just_ran = true;
 
     slot_set_control_states();
 }
@@ -316,16 +325,20 @@ void MainWindow::slot_enumerate_processes()
             }
         }
 
-        if(parent_index == -1)
+        if(parent_index == -1 && !m_thunderbold_just_ran)
         {
             QMessageBox::critical(this, m_title, tr("Could not identify the Firefox process!"));
-            QTimer::singleShot(0, qApp, &QApplication::quit);
+            if(!m_refresh_button)
+                QTimer::singleShot(0, qApp, &QApplication::quit);
         }
         else
         {
             m_ui->combo_Processes->setCurrentIndex(parent_index);
             slot_process_changed(parent_index);
         }
+
+        m_thunderbold_just_ran = false;
+        m_refresh_button = false;
     }
 
     slot_set_control_states();

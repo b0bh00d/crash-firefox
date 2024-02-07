@@ -28,6 +28,7 @@ private slots:
     void slot_set_control_states();
     void slot_crash_it();
     void slot_enumerate_processes();
+    void slot_manual_refresh();
 
     void slot_thunderbolt_finished();
     void slot_process_changed(int index);
@@ -50,6 +51,20 @@ private: // data members
       from the same thread (main).
      */
     int m_thunderbolt_thread_count{0};
+
+    /*!
+      Make note of the fact that we just launched the Thunderbolt
+      process to produce a crash.  If we haven't, then the lack
+      of a Firefox process will be noted to the user by a warning
+      dialog.
+     */
+    bool m_thunderbold_just_ran{false};
+
+    /*!
+      If we are enumerating process on demand by the user, then
+      don't automatically exit the application.
+     */
+    bool m_refresh_button{false};
 };
 
 using process_data_t = QPair<DWORD, QString>;
